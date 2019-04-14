@@ -1,4 +1,9 @@
 # ---------------------
+# Custom
+# =====================
+*.pdf
+
+# ---------------------
 # Python .gitignore
 # Source: https://github.com/github/gitignore/blob/master/Python.gitignore
 # =====================
