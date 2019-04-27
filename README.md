@@ -1,10 +1,12 @@
-# Python companion to Low Speed Aerodynamics 
+# Python companion to Low Speed Aerodynamics
 
-Low Speed Aerodynamics 2nd Edition by Joseph Katz and Alan Plotkin
+[Low Speed Aerodynamics 2nd Edition](https://www.amazon.com/Low-Speed-Aerodynamics-Second-Cambridge-Aerospace/dp/0521665523) by Joseph Katz and Alan Plotkin
 
 ## Purpose
 
 This is a project implements the FORTRAN computer programs listed in *Low Speed Aerodynamics (2nd Ed)* into a Python package and stand alone program(s). Additional features such as visualisation have been included.
+
+Written permission provided by Professor Joseph Katz, San Diego State University, to recreate the original FORTRAN functionality in Python and/or C for this Open Source Software.
 
 ## Installation and Usage
 
@@ -12,9 +14,9 @@ This is a project implements the FORTRAN computer programs listed in *Low Speed 
 
 ### Usage
 
-A program can be used
+A program can be used as a group of programs or individually.
 
-```
+```text
 katzplotkinpy [OPTIONS] PROGRAM [INPUT]
 
 Required:
@@ -59,7 +61,7 @@ The following table is a summary from Appendix D of *Low Speed Aerodynamics*. Ea
 
 ### Features
 
-In addition recreating the programs in Python, visualisation and other features have been added.
+In addition to recreating the programs in Python, visualisation and other features have been added.
 
 ## Copyright and License
 
