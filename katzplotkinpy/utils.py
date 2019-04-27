@@ -7,6 +7,7 @@
 
 
 import argparse
+import logging
 from sys import argv
 from pathlib import Path
 
@@ -19,7 +20,8 @@ class InputError(Exception):
 def get_args(description: str = ""):
     """
     Command Line Interface
-    Set description in help [-h] option and return arguments entered by the user
+    Set description in help [-h] option and return arguments entered by the user.
+    Handle output verbosity via logging
     """
     parser = argparse.ArgumentParser(
         prog=argv[0],
@@ -35,7 +37,7 @@ def get_args(description: str = ""):
     parser.add_argument(
         "-d",
         "--debug",
-        help="output additional messages to stout (equivalent to -v)",
+        help="output additional messages to stout (equivalent to -vv)",
         required=False,
         action="store_true",
     )
@@ -58,7 +60,7 @@ def get_args(description: str = ""):
         "--verbose",
         help="increase output verbosity to stout (e.g. -vv is more than -v)",
         required=False,
-        action="count",
+        action="store_true",
     )
     parser.add_argument(
         "-V",
@@ -67,11 +69,23 @@ def get_args(description: str = ""):
         required=False,
         action="store_true",
     )
+    ## This has the unwanted side effect of giving python debugging outputs!
+    ## e.g. > python -v utils.py test
 
     args = parser.parse_args()
+
+    if args.verbose == 1:
+        logging.basicConfig(level=logging.INFO)
+    elif args.verbose == 2 or args.debug:
+        logging.basicConfig(level=logging.DEBUG)
 
     return args
 
 
 if __name__ == "__main__":
     get_args("Utilities")
+    logging.critical("Critical")
+    logging.error("Error")
+    logging.warning("Warning")
+    logging.info("Info")
+    logging.debug("Debug")
