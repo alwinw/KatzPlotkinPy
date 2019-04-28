@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
-
-# --------------------------------------
+# ---------------------------------------------------------
 # Utility functions
-# Copyright 2019 Alwin Wang and collaborators
-# ======================================
+# Copyright 2019 Alwin Wang
+# =========================================================
 
 
 import argparse
@@ -12,22 +11,45 @@ from sys import argv
 from pathlib import Path
 
 
-# Handle Command Line Operations
+## Handle Command Line Interface
 class InputError(Exception):
     pass
 
 
-def get_args(description: str = ""):
+def get_args(description: str = "", main: bool = False):
     """
     Command Line Interface
+    
     Set description in help [-h] option and return arguments entered by the user.
-    Handle output verbosity via logging
     """
     parser = argparse.ArgumentParser(
         prog=argv[0],
         description="Katz and Plotkin for Python: {}".format(description),
         epilog="Source: https://github.com/AlwinW/KatzPlotkinPy",
     )
+    if main:
+        parser.add_argument(
+            "program",
+            help="program to be run",
+            choices=[
+                "AFGEN",
+                "VOR2D",
+                "SORC2D",
+                "DUB2DC",
+                "VOR2DC",
+                "SOR2DL",
+                "VOR2DL",
+                "PHICD",
+                "PHICSD",
+                "PHILD",
+                "PHIQD",
+                "DUB3DC",
+                "VORING",
+                "PANEL",
+                "WAKE",
+                "UVLM",
+            ],
+        )
     parser.add_argument(
         "input_file",
         help="path to input file to be processed",
@@ -37,7 +59,7 @@ def get_args(description: str = ""):
     parser.add_argument(
         "-d",
         "--debug",
-        help="output additional messages to stout (equivalent to -vv)",
+        help="output additional messages to stout (equivalent to -v)",
         required=False,
         action="store_true",
     )
@@ -60,7 +82,7 @@ def get_args(description: str = ""):
         "--verbose",
         help="increase output verbosity to stout (e.g. -vv is more than -v)",
         required=False,
-        action="store_true",
+        action="count",
     )
     parser.add_argument(
         "-V",
@@ -69,23 +91,30 @@ def get_args(description: str = ""):
         required=False,
         action="store_true",
     )
-    ## This has the unwanted side effect of giving python debugging outputs!
-    ## e.g. > python -v utils.py test
-
-    args = parser.parse_args()
-
-    if args.verbose == 1:
-        logging.basicConfig(level=logging.INFO)
-    elif args.verbose == 2 or args.debug:
-        logging.basicConfig(level=logging.DEBUG)
-
-    return args
+    return parser.parse_args()
 
 
+vprint = None
+
+
+def verbosity(args):
+    if args.verbose or args.debug:
+        v = max(args.verbose, args.debug)
+        print("Verbosity level: {}".format(v))
+
+        def _vprint(*verbosity_args):
+            if verbosity_args[0] <= v:
+                print(verbosity_args[1])
+
+    else:
+        _vprint = lambda *a, **k: None
+
+    global vprint
+    vprint = _vprint
+
+
+## Main Function
 if __name__ == "__main__":
-    get_args("Utilities")
-    logging.critical("Critical")
-    logging.error("Error")
-    logging.warning("Warning")
-    logging.info("Info")
-    logging.debug("Debug")
+    args = get_args("Utilities")
+    verbosity(args)
+    vprint(1, "hi")
