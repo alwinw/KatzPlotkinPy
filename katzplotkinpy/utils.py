@@ -57,13 +57,6 @@ def get_args(description: str = "", main: bool = False):
         action="store",
     )
     parser.add_argument(
-        "-d",
-        "--debug",
-        help="output additional messages to stout (equivalent to -v)",
-        required=False,
-        action="store_true",
-    )
-    parser.add_argument(
         "-q",
         "--quiet",
         help="suppress messages to stdout",
@@ -80,9 +73,17 @@ def get_args(description: str = "", main: bool = False):
     parser.add_argument(
         "-v",
         "--verbose",
-        help="increase output verbosity to stout (e.g. -vv is more than -v)",
+        help="increase output verbosity to stout (max verbosity is -vvv)",
         required=False,
         action="count",
+    )
+    parser.add_argument(
+        "-d",
+        "--debug",
+        help="output additional messages to stout (equivalent to -vvv)",
+        required=False,
+        action="store_const",
+        const=3,
     )
     parser.add_argument(
         "-V",
@@ -99,7 +100,8 @@ vprint = None
 
 def verbosity(args):
     if args.verbose or args.debug:
-        v = max(args.verbose, args.debug)
+        v = [args.verbose, args.debug]
+        v = min(max(x for x in v if x is not None), 3)
         print("Verbosity level: {}".format(v))
 
         def _vprint(*verbosity_args):

@@ -10,3 +10,4 @@ if __name__ == "__main__":
     description = "Programs from *Low Speed Aerodynamics* Appendix D"
     args = utils.get_args(description, main=True)
     utils.verbosity(args)
+    utils.vprint(3, args)

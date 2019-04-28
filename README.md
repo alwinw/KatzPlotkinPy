@@ -17,16 +17,19 @@ Written permission provided by Professor Joseph Katz, San Diego State University
 A program can be used as a group of programs or individually.
 
 ```text
-katzplotkinpy [OPTIONS] PROGRAM [INPUT]
+katzplotkinpy [OPTIONS] PROGRAM INPUT
 
 Required:
     PROGRAM                 Name of program, e.g. VOR2D
+    INPUT                   Input file
 
 Options:
-    -q, --quiet, --silent   Suppress messages to stdout
-    -v, --verbose           Emit additional messages to stdout
-    -V, --version           Show the version and exit
-    -h, --help              Show this message and exit
+  -h, --help            show this help message and exit
+  -q, --quiet           suppress messages to stdout
+  -s, --silent          suppress messages to stdout
+  -v, --verbose         increase output verbosity to stout ((max verbosity is -vvv))
+  -d, --debug           output additional messages to stout (equivalent to -vvv)
+  -V, --version         Show the version and exit
 ```
 
 ## Programs and Features
