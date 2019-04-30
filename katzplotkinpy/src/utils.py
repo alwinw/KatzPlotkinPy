@@ -7,8 +7,8 @@
 import re
 import argparse
 import logging
-from sys import argv
 from pathlib import Path
+from sys import argv
 
 
 ## Handle Command Line Interface
@@ -18,7 +18,7 @@ class InputError(Exception):
     pass
 
 
-def get_args(description: str = "", main: bool = False):
+def get_args(description: str = "", program: bool = False, args=None):
     """
     Command Line Interface
     
@@ -29,7 +29,7 @@ def get_args(description: str = "", main: bool = False):
         description="Katz and Plotkin for Python: {}".format(description),
         epilog="Source: https://github.com/AlwinW/KatzPlotkinPy",
     )
-    if main:
+    if program:
         parser.add_argument(
             "program",
             help="program to be run",
@@ -96,9 +96,10 @@ def get_args(description: str = "", main: bool = False):
         required=False,
         action="store_true",
     )
-    args = parser.parse_args()
-
-    return args
+    if args is None:
+        return parser.parse_args()
+    else:
+        return parser.parse_args(args)
 
 
 ## Verbosity printing
