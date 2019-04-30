@@ -4,7 +4,7 @@
 # Copyright 2019 Alwin Wang
 # =========================================================
 
-
+import re
 import argparse
 import logging
 from sys import argv
@@ -13,6 +13,8 @@ from pathlib import Path
 
 ## Handle Command Line Interface
 class InputError(Exception):
+    """Exception class for command line errors"""
+
     pass
 
 
@@ -76,6 +78,7 @@ def get_args(description: str = "", main: bool = False):
         help="increase output verbosity to stout (max verbosity is -vvv)",
         required=False,
         action="count",
+        default=0,
     )
     parser.add_argument(
         "-d",
@@ -84,6 +87,7 @@ def get_args(description: str = "", main: bool = False):
         required=False,
         action="store_const",
         const=3,
+        default=0,
     )
     parser.add_argument(
         "-V",
@@ -92,16 +96,19 @@ def get_args(description: str = "", main: bool = False):
         required=False,
         action="store_true",
     )
-    return parser.parse_args()
+    args = parser.parse_args()
+
+    return args
 
 
+## Verbosity printing
 vprint = None
 
 
 def verbosity(args):
+    """Define verbose print function"""
     if args.verbose or args.debug:
-        v = [args.verbose, args.debug]
-        v = min(max(x for x in v if x is not None), 3)
+        v = min(max(args.verbose, args.debug), 3)
         print("Verbosity level: {}".format(v))
 
         def _vprint(*verbosity_args):
@@ -113,6 +120,15 @@ def verbosity(args):
 
     global vprint
     vprint = _vprint
+
+
+## Version information
+def get_version() -> str:
+    """Get version information"""
+    version = re.search(
+        '__version__ = "([0-9.]*)"', open("katzplotkinpy/__init__.py").read()
+    ).group(1)
+    return "Version: {}".format(version)
 
 
 ## Main Function

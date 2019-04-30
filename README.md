@@ -24,12 +24,12 @@ Required:
     INPUT                   Input file
 
 Options:
-  -h, --help            show this help message and exit
-  -q, --quiet           suppress messages to stdout
-  -s, --silent          suppress messages to stdout
-  -v, --verbose         increase output verbosity to stout ((max verbosity is -vvv))
-  -d, --debug           output additional messages to stout (equivalent to -vvv)
-  -V, --version         Show the version and exit
+    -h, --help            show this help message and exit
+    -q, --quiet           suppress messages to stdout
+    -s, --silent          suppress messages to stdout
+    -v, --verbose         increase output verbosity to stout (max verbosity is -vvv)
+    -d, --debug           output additional messages to stout (equivalent to -vvv)
+    -V, --version         Show the version and exit
 ```
 
 ## Programs and Features
