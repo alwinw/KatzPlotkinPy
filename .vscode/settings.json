@@ -1,0 +1,19 @@
+{
+    "editor.formatOnSave": true,
+    "python.formatting.provider": "black",
+    "cSpell.words": [
+        "katzplotkinpy",
+        "vprint",
+        "AFGEN",
+        "VOR",
+        "SORC",
+        "DUB",
+        "PHICD",
+        "PHICSD",
+        "PHILD",
+        "PHIQD",
+        "VORING",
+        "UVLM",
+    ],
+    "python.pythonPath": "C:\\ProgramData\\Anaconda3\\python.exe",
+}
