@@ -5,7 +5,7 @@
 # =========================================================
 
 import re
-from katzplotkinpy import utils
+from katzplotkinpy.src import utils
 
 
 def main():

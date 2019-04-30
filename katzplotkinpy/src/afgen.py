@@ -5,7 +5,7 @@
 # =========================================================
 
 try:
-    import katzplotkinpy.utils as utils
+    import katzplotkinpy.src.utils as utils
 except ModuleNotFoundError:
     print("Using relative module import")
     import utils
