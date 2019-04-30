@@ -1,5 +1,7 @@
 # Python companion to Low Speed Aerodynamics
 
+[![License: GPL v3](https://img.shields.io/github/tag-pre/AlwinW/KatzPlotkinPy.svg?style=popout-square&label=Release&color=informational)](https://www.gnu.org/licenses/gpl-3.0)
+
 [Low Speed Aerodynamics 2nd Edition](https://www.amazon.com/Low-Speed-Aerodynamics-Second-Cambridge-Aerospace/dp/0521665523) by Joseph Katz and Alan Plotkin
 
 ## Purpose
