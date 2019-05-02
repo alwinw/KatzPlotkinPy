@@ -5,7 +5,7 @@
 # =========================================================
 
 try:
-    import katzplotkinpy.utils as utils
+    import katzplotkinpy.src.utils as utils
 except ModuleNotFoundError:
     print("Using relative module import")
     import utils
@@ -13,6 +13,7 @@ except ModuleNotFoundError:
 if __name__ == "__main__":
     description = "Grid generator for van de Vooren airfoil shapes"
     args = utils.get_args(description)
+    utils.verbosity(args)
 
     utils.vprint(1, "1 verbosity")
     utils.vprint(2, "2 verbosity")

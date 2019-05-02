@@ -5,7 +5,7 @@
 # =========================================================
 
 import re
-from katzplotkinpy import utils
+from katzplotkinpy.src import utils
 
 
 def main():
@@ -15,7 +15,7 @@ def main():
     If -V argument, just return the version number and exit
     """
     description = "Programs from *Low Speed Aerodynamics* Appendix D"
-    args = utils.get_args(description, main=True)
+    args = utils.get_args(description, program=True)
     utils.verbosity(args)
 
     version_str = utils.get_version()
