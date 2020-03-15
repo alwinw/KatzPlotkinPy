@@ -1,22 +1,25 @@
 #!/usr/bin/env python3
-# ---------------------------------------------------------
-# Grid generator for van de Vooren airfoil shapes
-# Copyright 2019 Alwin Wang
-# =========================================================
+
+import argparse
+import logging
+import sys
+
+logger = logging.getLogger(__name__)
 
 try:
-    import katzplotkinpy.src.utils as utils
+    from katzplotkinpy.src.utils import parse_command_line
 except ModuleNotFoundError:
-    print("Using relative module import")
-    import utils
+    logger.warning("Using local import")
+    from utils import parse_command_line
+
 
 if __name__ == "__main__":
-    description = "Grid generator for van de Vooren airfoil shapes"
-    args = utils.get_args(description)
-    utils.verbosity(args)
+    logging.basicConfig(
+        stream=sys.stderr,
+        level=logging.INFO,
+        format="%(name)s [%(levelname)s]: %(message)s",
+    )
 
-    utils.vprint(1, "1 verbosity")
-    utils.vprint(2, "2 verbosity")
-    utils.vprint(3, "3 verbosity")
-    utils.vprint(4, "4 verbosity")
-    utils.vprint(5, "5 verbosity")
+    args = parse_command_line(
+        description="Grid generator for van de Vooren airfoil shapes"
+    )

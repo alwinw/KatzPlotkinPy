@@ -1,33 +1,17 @@
 #!/usr/bin/env python3
-# ---------------------------------------------------------
-# Main script entry for katzplotkinpy
-# Copyright 2019 Alwin Wang
-# =========================================================
 
 import re
-from katzplotkinpy.src import utils
+
+from katzplotkinpy.src.utils import parse_command_line
 
 
 def main():
-    """
-    Main function of katzplotkinpy
+    args = parse_command_line(
+        description="Programs from *Low Speed Aerodynamics* Appendix D", prog_list=True
+    )
 
-    If -V argument, just return the version number and exit
-    """
-    description = "Programs from *Low Speed Aerodynamics* Appendix D"
-    args = utils.get_args(description, program=True)
-    utils.verbosity(args)
-
-    version_str = utils.get_version()
-    if args.version:
-        print(version_str)
-        return
-    utils.vprint(1, version_str)
-
-    return args
+    return None
 
 
 if __name__ == "__main__":
     args = main()
-
-    utils.vprint(3, args)

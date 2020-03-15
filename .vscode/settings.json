@@ -16,5 +16,8 @@
         "katzplotkinpy",
         "vprint"
     ],
-    "python.pythonPath": "C:\\ProgramData\\Anaconda3\\python.exe",
+    "python.linting.mypyEnabled": true,
+    "python.linting.enabled": true,
+    "files.autoSave": "onFocusChange",
+    "trailing-spaces.highlightCurrentLine": false
 }
