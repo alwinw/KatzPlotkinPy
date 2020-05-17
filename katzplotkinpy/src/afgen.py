@@ -1,22 +1,55 @@
 #!/usr/bin/env python3
-# ---------------------------------------------------------
-# Grid generator for van de Vooren airfoil shapes
-# Copyright 2019 Alwin Wang
-# =========================================================
+
+import argparse
+import logging
+import sys
+
+from collections import namedtuple
+
+logger = logging.getLogger(__name__)
 
 try:
-    import katzplotkinpy.src.utils as utils
+    from katzplotkinpy.src.utils import parse_command_line
 except ModuleNotFoundError:
-    print("Using relative module import")
-    import utils
+    logger.warning("Using local import")
+    from utils import parse_command_line
+
+InputVar = namedtuple("InputVars", ["name", "value", "description", "type"])
+
+
+def run(e: float = None, ak: float = None, alpha: float = None, m: int = None):
+    logger.info("Ready to start van de Vooren Transformation")
+
+    input_vars = [
+        InputVar("e", e, "Thickness Coef", float),
+        InputVar("ak", ak, "T.E. Angle Coef", float),
+        InputVar("alpha", alpha, "Angle of Attack (deg)", float),
+        InputVar("m", m, "Number of Panels", int),
+    ]
+
+    for input_var in input_vars:  # type:InputVar
+        value = input_var.value
+        if not value:
+            value = input("Enter {}: ".format(input_var.description))
+        try:
+            value = input_var.type(value)
+        except ValueError as e:
+            logger.error(
+                "Error while parsing input values. Got `{}` expected type `{}`".format(
+                    value, input_var.type.__name__
+                )
+            )
+            raise e
+
 
 if __name__ == "__main__":
-    description = "Grid generator for van de Vooren airfoil shapes"
-    args = utils.get_args(description)
-    utils.verbosity(args)
+    logging.basicConfig(
+        stream=sys.stderr,
+        level=logging.INFO,
+        format="%(name)s [%(levelname)s]: %(message)s",
+    )
 
-    utils.vprint(1, "1 verbosity")
-    utils.vprint(2, "2 verbosity")
-    utils.vprint(3, "3 verbosity")
-    utils.vprint(4, "4 verbosity")
-    utils.vprint(5, "5 verbosity")
+    args = parse_command_line(
+        description="Grid generator for van de Vooren airfoil shapes"
+    )
+    run()

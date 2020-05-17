@@ -1,38 +1,40 @@
 #!/usr/bin/env python3
-# ---------------------------------------------------------
-# Utility functions
-# Copyright 2019 Alwin Wang
-# =========================================================
 
 import re
 import argparse
 import logging
 from pathlib import Path
-from sys import argv
+import sys
+
+module = sys.modules["__main__"].__file__
+# logger = logging.getLogger(module)
+logger = logging.getLogger(__name__)
 
 
-## Handle Command Line Interface
-class InputError(Exception):
-    """Exception class for command line errors"""
-
-    pass
-
-
-def get_args(description: str = "", program: bool = False, args=None):
-    """
-    Command Line Interface
+def parse_command_line(
+    description: str = module, prog_list: bool = False, argv: list = None
+) -> argparse.Namespace:
+    """Parse command line arguments. See -h for details
     
-    Set description in help [-h] option and return arguments entered by the user.
+    Keyword Arguments:
+        argv {list} -- Arguments from command line (default: {None})
+        description {str} -- Description to be presented to the user (default: {str})
+    
+    Returns:
+        args -- Parsed arguments
     """
+    if argv is None:
+        argv = sys.argv
+
     parser = argparse.ArgumentParser(
-        prog=argv[0],
+        prog=module,
         description="Katz and Plotkin for Python: {}".format(description),
         epilog="Source: https://github.com/AlwinW/KatzPlotkinPy",
     )
-    if program:
+
+    if prog_list:
         parser.add_argument(
             "program",
-            help="program to be run",
             choices=[
                 "AFGEN",
                 "VOR2D",
@@ -51,89 +53,60 @@ def get_args(description: str = "", program: bool = False, args=None):
                 "WAKE",
                 "UVLM",
             ],
+            help="program to be run",
         )
-    parser.add_argument(
-        "input_file",
-        help="path to input file to be processed",
-        type=str,
-        action="store",
-    )
-    parser.add_argument(
-        "-q",
-        "--quiet",
-        help="suppress messages to stdout",
-        required=False,
-        action="store_true",
-    )
-    parser.add_argument(
-        "-s",
-        "--silent",
-        help="suppress messages to stdout",
-        required=False,
-        action="store_true",
-    )
+
     parser.add_argument(
         "-v",
         "--verbose",
-        help="increase output verbosity to stout (max verbosity is -vvv)",
-        required=False,
         action="count",
+        dest="verbose_count",
         default=0,
+        help="Increase log verbosity for each occurance.",
     )
     parser.add_argument(
         "-d",
         "--debug",
-        help="output additional messages to stout (equivalent to -vvv)",
+        action="store_true",
         required=False,
-        action="store_const",
-        const=3,
-        default=0,
+        help="Show debugging messages. Only overrules verbosity flag.",
     )
     parser.add_argument(
-        "-V",
-        "--version",
-        help="Show the version and exit",
-        required=False,
+        "-s",
+        "--silent",
         action="store_true",
+        required=False,
+        help="Suppress log messages. Overrules all other logging flags.",
     )
-    if args is None:
-        return parser.parse_args()
+    parser.add_argument(
+        "-V", "--version", action="version", version="%(prog)s {}".format("1")
+    )  # ! To fix
+
+    # TODO Additional inputs
+
+    args = parser.parse_args()
+    if args.silent:
+        level = 30
+    elif args.debug:
+        level = 10
     else:
-        return parser.parse_args(args)
+        level = max(3 - args.verbose_count, 0) * 10
+    logger.setLevel(level)
 
-
-## Verbosity printing
-vprint = None
-
-
-def verbosity(args):
-    """Define verbose print function"""
-    if args.verbose or args.debug:
-        v = min(max(args.verbose, args.debug), 3)
-        print("Verbosity level: {}".format(v))
-
-        def _vprint(*verbosity_args):
-            if verbosity_args[0] <= v:
-                print(verbosity_args[1])
-
-    else:
-        _vprint = lambda *a, **k: None
-
-    global vprint
-    vprint = _vprint
-
-
-## Version information
-def get_version() -> str:
-    """Get version information"""
-    version = re.search(
-        '__version__ = "([0-9.]*)"', open("katzplotkinpy/__init__.py").read()
-    ).group(1)
-    return "Version: {}".format(version)
+    return args
 
 
 ## Main Function
 if __name__ == "__main__":
-    args = get_args("Utilities")
-    verbosity(args)
-    vprint(1, "hi")
+    logging.basicConfig(
+        stream=sys.stderr,
+        level=logging.INFO,
+        format="%(name)s [%(levelname)s] %(message)s",
+    )
+
+    args = parse_command_line(description="Utilities")
+    logger.debug("Logger DEBUG")
+    logger.info("Logger INFO")
+    logger.warning("Logger WARNING")
+    logger.error("Logger ERROR")
+    logger.critical("Logger CRITICAL")
