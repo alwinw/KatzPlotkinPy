@@ -1,8 +1,4 @@
 #!/usr/bin/env python3
-# ---------------------------------------------------------
-# Setup file
-# Copyright 2019 Alwin Wang
-# =========================================================
 
 import re
 from setuptools import setup, find_packages
@@ -17,4 +13,3 @@ setup(
     url="https://github.com/AlwinW/KatzPlotkinPy",
     packages=["katzplotkinpy", "katzplotkinpy.src"],
 )
-

@@ -1,8 +1,4 @@
 #!/usr/bin/env python3
-# ---------------------------------------------------------
-# Main script entry for katzplotkinpy
-# Copyright 2019 Alwin Wang
-# =========================================================
 
 import collections
 
