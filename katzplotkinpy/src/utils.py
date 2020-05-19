@@ -112,8 +112,8 @@ class BootstrapArgparse:
             *name_or_flags, action="store", type=existing_dir, help=help
         )
 
-    def add_argument(self, *args):
-        self.parser.add_argument(*args)
+    def add_argument(self, *args, **kwargs):
+        self.parser.add_argument(*args, **kwargs)
 
     def parse_args(self, get_logger=None) -> argparse.Namespace:
         args = self.parser.parse_args()
