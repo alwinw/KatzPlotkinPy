@@ -3,7 +3,6 @@
 import argparse
 import logging
 from pathlib import Path
-
 from typing import Tuple
 
 logger = logging.getLogger(__name__)
@@ -115,7 +114,15 @@ class BootstrapArgparse:
     def add_argument(self, *args, **kwargs):
         self.parser.add_argument(*args, **kwargs)
 
-    def parse_args(self, get_logger=None) -> argparse.Namespace:
+    def parse_args(self, get_logger: logging.Logger = None) -> argparse.Namespace:
+        """
+        "Parse provided args
+
+        :param get_logger: logger to set level, defaults to None
+        :type get_logger: logging.Logger, optional
+        :return: args as Namespace
+        :rtype: argparse.Namespace
+        """
         args = self.parser.parse_args()
         if get_logger is not None:
             if args.silent:
@@ -133,7 +140,7 @@ if __name__ == "__main__":
     cli = BootstrapArgparse()
     args = cli.parse_args(logger)
 
-    print("Args fro CLI were '{}'".format(args))
+    print("Args from CLI were '{}'".format(args))
 
     logger.debug("Logger DEBUG")
     logger.info("Logger INFO")

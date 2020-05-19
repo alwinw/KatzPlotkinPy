@@ -2,8 +2,6 @@
 
 import argparse
 import logging
-import sys
-
 from collections import namedtuple
 
 logger = logging.getLogger(__name__)
