@@ -2,17 +2,9 @@
 
 import argparse
 import logging
-import sys
-
 from collections import namedtuple
 
 logger = logging.getLogger(__name__)
-
-try:
-    from katzplotkinpy.src.utils import parse_command_line
-except ModuleNotFoundError:
-    logger.warning("Using local import")
-    from utils import parse_command_line
 
 InputVar = namedtuple("InputVars", ["name", "value", "description", "type"])
 
@@ -40,16 +32,3 @@ def run(e: float = None, ak: float = None, alpha: float = None, m: int = None):
                 )
             )
             raise e
-
-
-if __name__ == "__main__":
-    logging.basicConfig(
-        stream=sys.stderr,
-        level=logging.INFO,
-        format="%(name)s [%(levelname)s]: %(message)s",
-    )
-
-    args = parse_command_line(
-        description="Grid generator for van de Vooren airfoil shapes"
-    )
-    run()

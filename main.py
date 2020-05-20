@@ -1,17 +1,12 @@
 #!/usr/bin/env python3
 
-import re
+import logging
 
-from katzplotkinpy.src.utils import parse_command_line
+logger = logging.getLogger(__name__)
 
-
-def main():
-    args = parse_command_line(
-        description="Programs from *Low Speed Aerodynamics* Appendix D", prog_list=True
-    )
-
-    return None
-
+from katzplotkinpy.src.utils import parse_args
 
 if __name__ == "__main__":
-    args = main()
+    args = parse_args(
+        description="Python companion to Low Speed Aerodynamics", get_logger=logger
+    )
