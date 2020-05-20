@@ -46,7 +46,7 @@ The following table is a summary from Appendix D of *Low Speed Aerodynamics*. Ea
 |  1. |  `AFGEN` | Grid generator for van de Vooren airfoil shapes       |   6.7   |
 |     |          |            **_2D: Neumann Boundary Condition_**       |         |
 |  2. |  `VOR2D` | Discrete vortex, thin wing method                     |  11.1.1 |
-|  3. | `SORC2D` | Constant strength source method                       |  11.2.1 |
+|  3. | `SOR2DC` | Constant strength source method                       |  11.2.1 |
 |  4. | `DUB2DC` | Constant strength doublet method                      |  11.2.2 |
 |  5. | `VOR2DC` | Constant strength vortex method                       |  11.2.3 |
 |  6. | `SOR2DL` | Linear strength source method                         |  11.4.1 |
@@ -59,7 +59,7 @@ The following table is a summary from Appendix D of *Low Speed Aerodynamics*. Ea
 |     |          |                    **_3D Programs_**                  |         |
 | 12. | `DUB3DC` | Influence of constant strength source/doublet         |  10.4.1 |
 | 13. | `VORING` | VLM for rectilinear surfaces (with ground effect)     |  12.3   |
-| 14. | ` PANEL` | Constant strength sources and doublets (Dirichlet BC) |  12.5   |
+| 14. |  `PANEL` | Constant strength sources and doublets (Dirichlet BC) |  12.5   |
 |     |          |             **_Time Dependent Programs_**             |         |
 | 15. |   `WAKE` | Acceleration of flat plate using a lumped vortex      |  13.7   |
 | 16. |   `UVLM` | Unsteady motion of a thin rectangular lifting surface |  13.12  |

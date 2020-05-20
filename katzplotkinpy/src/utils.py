@@ -2,14 +2,41 @@
 
 import argparse
 import logging
+import sys
+from collections import namedtuple
 from pathlib import Path
-from typing import Tuple
+from typing import List
 
 logger = logging.getLogger(__name__)
 
 
+prog_listing = {
+    "afgen": "Grid generator for van de Vooren airfoil shapes",
+    #
+    "vor2d": "Discrete vortex, thin wing method",
+    "sor2dc": "Constant strength source method",
+    "dub2dc": "Constant strength doublet method",
+    "vor2dc": "Constant strength vortex method",
+    "sor2dl": "Linear strength source method",
+    "vor2dl": "Linear strength vortex method",
+    #
+    "phicd": "Constant strength doublet method",
+    "phicsd": "Constant strength source/doublet method",
+    "phild": "Linear strength doublet method",
+    "phiqd": "Quadratic strength doublet method",
+    #
+    "dub3dc": "Influence of constant strength source/doublet",
+    "voring": "VLM for rectilinear surfaces (with ground effect)",
+    "panel": "Constant strength sources and doublets (Dirichlet BC)",
+    #
+    "wake": "Acceleration of flat plate using a lumped vortex",
+    "uvlm": "Unsteady motion of a thin rectangular lifting surface",
+}
+
+
 def existing_file(input_path: str, allowed_extensions: tuple = None) -> Path:
-    """Check if the input path points to an existing file of given (optional) extension
+    """Check if the input path points to an existing file of given (optional) extension 
+    and returns a Path object with expanded user
 
     :param input_path: path to check
     :type input_path: str
@@ -35,7 +62,8 @@ def existing_file(input_path: str, allowed_extensions: tuple = None) -> Path:
 
 
 def existing_dir(input_path: str) -> Path:
-    """Check if input path points to an existing directory
+    """Check if input path points to an existing directory and returns a Path object with
+    expanded user
 
     :param input_path: path to check
     :type input_path: str
@@ -49,96 +77,110 @@ def existing_dir(input_path: str) -> Path:
     return dir_path
 
 
-class BootstrapArgparse:
-    """Wrap argparse with commonly used CLI
-    """
+def add_subparser_wrapper(
+    name: str,
+    subparsers: argparse._SubParsersAction,
+    parents: List[argparse.ArgumentParser],
+):
+    return subparsers.add_parser(
+        name, parents=parents, description=prog_listing[name], help=prog_listing[name]
+    )
 
-    def __init__(self, description: str = __package__, version: str = "0.1.0"):
-        formatter_class = argparse.RawTextHelpFormatter
-        self.parser = argparse.ArgumentParser(
-            description=description,
-            formatter_class=formatter_class,
-            epilog="Source: https://github.com/AlwinW/KatzPlotkinPy",
-        )
-        self.parser.add_argument(
-            "-v",
-            "--verbose",
-            action="count",
-            default=0,
-            required=False,
-            help="Increase log verbosity (max -vvv)",
-            dest="verbose_count",
-        )
-        self.parser.add_argument(
-            "-d",
-            "--debug",
-            action="store_true",
-            required=False,
-            help="Show debugging messages (eqv. to -vv, overrides verbosity flag)",
-        )
-        self.parser.add_argument(
-            "-s",
-            "--silent",
-            action="store_true",
-            required=False,
-            help="Suppress log warning and lower messages (overrides other verbosity flags)",
-        )
-        self.parser.add_argument(
-            "-V",
-            "--version",
-            action="version",
-            version="%(prog)s {}".format(version),
-            help="show the version and exit",
-        )
 
-    def add_input_file_arg(
-        self,
-        *name_or_flags: str,
-        extensions: Tuple[str] = None,
-        help: str = "Input file path",
-    ):
-        self.parser.add_argument(
-            *name_or_flags,
-            action="store",
-            type=lambda path: existing_file(path, extensions),
-            help=help,
-        )
+def parse_args(
+    argv: List[str] = sys.argv,
+    description: str = __package__,
+    version: str = "0.1.0",
+    get_logger: logging.Logger = None,
+):
 
-    def add_input_dir_arg(
-        self, *name_or_flags: str, help: str = "Input directory path"
-    ):
-        self.parser.add_argument(
-            *name_or_flags, action="store", type=existing_dir, help=help
-        )
+    # Main parser
+    formatter_class = argparse.RawTextHelpFormatter
+    main_parser = argparse.ArgumentParser(
+        description=description,
+        formatter_class=formatter_class,
+        epilog="Source: https://github.com/AlwinW/KatzPlotkinPy",
+    )
+    main_parser.add_argument(
+        "-V",
+        "--version",
+        action="version",
+        version="%(prog)s {}".format(version),
+        help="show the version and exit",
+    )
+    subparsers = main_parser.add_subparsers(
+        title="programs",
+        description="Programs from Appendix D of 'Low Speed Aerodynamics'",
+        dest="program",
+    )
 
-    def add_argument(self, *args, **kwargs):
-        self.parser.add_argument(*args, **kwargs)
+    # Inheritance parser
+    parent_parser = argparse.ArgumentParser(add_help=False)
+    parent_parser.add_argument(
+        "-v",
+        "--verbose",
+        action="count",
+        default=0,
+        required=False,
+        help="Increase log verbosity (max -vvv)",
+        dest="verbose_count",
+    )
+    parent_parser.add_argument(
+        "-d",
+        "--debug",
+        action="store_true",
+        required=False,
+        help="Show debugging messages (eqv. to -vv, overrides verbosity flag)",
+    )
+    parent_parser.add_argument(
+        "-s",
+        "--silent",
+        action="store_true",
+        required=False,
+        help="Suppress log warning and lower messages (overrides other verbosity flags)",
+    )
 
-    def parse_args(self, get_logger: logging.Logger = None) -> argparse.Namespace:
-        """
-        "Parse provided args
+    # Program parsers
+    afgen_parser = add_subparser_wrapper("afgen", subparsers, [parent_parser])
 
-        :param get_logger: logger to set level, defaults to None
-        :type get_logger: logging.Logger, optional
-        :return: args as Namespace
-        :rtype: argparse.Namespace
-        """
-        args = self.parser.parse_args()
-        if get_logger is not None:
-            if args.silent:
-                logger.setLevel(logging.ERROR)
-            elif args.debug:
-                logger.setLevel(logging.DEBUG)
-            else:
-                logger.setLevel(max(3 - args.verbose_count, 1) * 10)
-        return args
+    vor2d_parser = add_subparser_wrapper("vor2d", subparsers, [parent_parser])
+    sor2dc_parser = add_subparser_wrapper("sor2dc", subparsers, [parent_parser])
+    dub2dc_parser = add_subparser_wrapper("dub2dc", subparsers, [parent_parser])
+    vor2dc_parser = add_subparser_wrapper("vor2dc", subparsers, [parent_parser])
+    sor2dl_parser = add_subparser_wrapper("sor2dl", subparsers, [parent_parser])
+    vor2dl_parser = add_subparser_wrapper("vor2dl", subparsers, [parent_parser])
+
+    phicd_parser = add_subparser_wrapper("phicd", subparsers, [parent_parser])
+    phicsd_parser = add_subparser_wrapper("phicsd", subparsers, [parent_parser])
+    phild_parser = add_subparser_wrapper("phild", subparsers, [parent_parser])
+    phiqd_parser = add_subparser_wrapper("phiqd", subparsers, [parent_parser])
+
+    dub3dc_parser = add_subparser_wrapper("dub3dc", subparsers, [parent_parser])
+    voring_parser = add_subparser_wrapper("voring", subparsers, [parent_parser])
+    panel_parser = add_subparser_wrapper("panel", subparsers, [parent_parser])
+
+    wake_parser = add_subparser_wrapper("wake", subparsers, [parent_parser])
+    uvlm_parser = add_subparser_wrapper("uvlm", subparsers, [parent_parser])
+
+    if len(argv) == 1:
+        main_parser.print_help(sys.stderr)
+        sys.exit(1)
+    args = main_parser.parse_args(argv[1:])
+
+    if get_logger is not None:
+        if args.silent:
+            logger.setLevel(logging.ERROR)
+        elif args.debug:
+            logger.setLevel(logging.DEBUG)
+        else:
+            logger.setLevel(max(3 - args.verbose_count, 1) * 10)
+    return args
 
 
 if __name__ == "__main__":
     logging.basicConfig(format="%(name)s [%(levelname)s] %(message)s")
 
-    cli = BootstrapArgparse()
-    args = cli.parse_args(logger)
+    args = parse_args()
 
     print("Args from CLI were '{}'".format(args))
 
