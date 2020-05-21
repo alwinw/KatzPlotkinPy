@@ -2,6 +2,8 @@
 
 import collections
 
+# from .afgen import X
+
 __VersionInfo = collections.namedtuple("VersionInfo", ("major", "minor", "micro"))
 
 __version__ = "0.0.2"

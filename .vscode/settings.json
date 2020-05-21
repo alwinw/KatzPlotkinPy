@@ -20,5 +20,8 @@
     "python.linting.mypyEnabled": true,
     "python.linting.enabled": true,
     "files.autoSave": "onFocusChange",
-    "trailing-spaces.highlightCurrentLine": false
+    "trailing-spaces.highlightCurrentLine": false,
+    "editor.codeActionsOnSave": {
+        "source.organizeImports": true
+    }
 }
