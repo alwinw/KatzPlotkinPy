@@ -175,17 +175,3 @@ def parse_args(
         else:
             logger.setLevel(max(3 - args.verbose_count, 1) * 10)
     return args
-
-
-if __name__ == "__main__":
-    logging.basicConfig(format="%(name)s [%(levelname)s] %(message)s")
-
-    args = parse_args()
-
-    print("Args from CLI were '{}'".format(args))
-
-    logger.debug("Logger DEBUG")
-    logger.info("Logger INFO")
-    logger.warning("Logger WARNING")
-    logger.error("Logger ERROR")
-    logger.critical("Logger CRITICAL")

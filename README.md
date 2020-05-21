@@ -48,7 +48,7 @@ The following table is a summary from Appendix D of *Low Speed Aerodynamics*. Ea
 
 A program can be used as a group of programs or individually.
 
-```properties
+```plaintext
 katzplotkinpy [OPTIONS] {PROGRAM NAME} [PROGRAM OPTIONS]
 
 Python companion to Low Speed Aerodynamics
@@ -81,9 +81,8 @@ programs:
 Source: https://github.com/AlwinW/KatzPlotkinPy
 ```
 
-```properties
-katzplotkinpy afgen -h
-usage: main.py afgen [-h] [-v] [-d] [-s]
+```plaintext
+katzplotkinpy afgen [-h] [-v] [-d] [-s]
 
 Grid generator for van de Vooren airfoil shapes
 
@@ -92,7 +91,7 @@ optional arguments:
   -v, --verbose  Increase log verbosity (max -vvv)
   -d, --debug    Show debugging messages (eqv. to -vv, overrides verbosity flag)
   -s, --silent   Suppress log warning and lower messages (overrides other verbosity flags)
-``` 
+```
 
 ### Features
 
