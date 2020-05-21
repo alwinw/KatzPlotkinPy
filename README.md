@@ -93,6 +93,15 @@ optional arguments:
   -s, --silent   Suppress log warning and lower messages (overrides other verbosity flags)
 ```
 
+### Running Tests
+
+```sh
+python3 -m unittest -v
+#  or  #
+coverage run -m unittest discover -v
+coverage report -m
+```
+
 ### Features
 
 In addition to recreating the programs in Python, visualisation and other features have been added.

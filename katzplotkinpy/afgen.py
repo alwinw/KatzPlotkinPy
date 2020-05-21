@@ -6,11 +6,11 @@ from collections import namedtuple
 
 logger = logging.getLogger(__name__)
 
-InputVar = namedtuple("InputVars", ["name", "value", "description", "type"])
 
-
-def run(e: float = None, ak: float = None, alpha: float = None, m: int = None):
-    logger.info("Ready to start van de Vooren Transformation")
+def interactive_inputs(
+    e: float = None, ak: float = None, alpha: float = None, m: int = None
+):
+    InputVar = namedtuple("InputVars", ["name", "value", "description", "type"])
 
     input_vars = [
         InputVar("e", e, "Thickness Coef", float),
@@ -32,3 +32,11 @@ def run(e: float = None, ak: float = None, alpha: float = None, m: int = None):
                 )
             )
             raise e
+
+
+def afgen(e: float, ak: float, alpha: float, m: int):
+    logger.info("Starting van de Vooren Transformation")
+    tl = 1.0
+    a = 2 * tl * (e + 1.0) ** (ak - 1.0) / (2.0 ** ak)
+    al = alpha / 57.2957795131
+    i_theta = 360 / m

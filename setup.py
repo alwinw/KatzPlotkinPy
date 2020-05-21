@@ -2,8 +2,10 @@
 
 import re
 
+import requests
 from setuptools import find_packages, setup
 
+import katzplotkinpy
 from katzplotkinpy import __version__
 
 setup(
@@ -13,5 +15,5 @@ setup(
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
     url="https://github.com/AlwinW/KatzPlotkinPy",
-    packages=["katzplotkinpy", "katzplotkinpy.src"],
+    packages=["katzplotkinpy"],
 )
