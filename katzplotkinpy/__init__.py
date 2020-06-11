@@ -1,8 +1,8 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 
 import collections
 
-# from .afgen import X
+from katzplotkinpy.src.cli import parse_args
 
 __VersionInfo = collections.namedtuple("VersionInfo", ("major", "minor", "micro"))
 
