@@ -2,7 +2,7 @@
 
 import collections
 
-from katzplotkinpy.src.cli import parse_args
+from katzplotkinpy.cli import parse_args
 
 __VersionInfo = collections.namedtuple("VersionInfo", ("major", "minor", "micro"))
 
