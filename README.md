@@ -1,6 +1,6 @@
 # Python companion to Low Speed Aerodynamics
 
-[![License: GPL v3](https://img.shields.io/github/tag-pre/AlwinW/KatzPlotkinPy.svg?style=popout-square&label=Release&color=informational)](https://www.gnu.org/licenses/gpl-3.0)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 [Low Speed Aerodynamics 2nd Edition](https://www.amazon.com/Low-Speed-Aerodynamics-Second-Cambridge-Aerospace/dp/0521665523) by Joseph Katz and Alan Plotkin
 
@@ -43,6 +43,8 @@ The following table is a summary from Appendix D of *Low Speed Aerodynamics*. Ea
 ## Installation and Usage
 
 ### Installation
+
+Details to come
 
 ### Usage
 
@@ -109,3 +111,7 @@ In addition to recreating the programs in Python, visualisation and other featur
 ## Contributers
 
 [@Alwin Wang](github.com/alwinw)
+
+## Acknowledgement
+
+Written consent given by the author to create this python port from the original Fortran code and algorithms presented in *Low Speed Aerodynamics 2nd Edition*.
