@@ -14,6 +14,6 @@ setup(
     author="Alwin Wang",
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
-    url="https://github.com/AlwinW/KatzPlotkinPy",
+    url="https://github.com/alwinw/KatzPlotkinPy",
     packages=["katzplotkinpy"],
 )
