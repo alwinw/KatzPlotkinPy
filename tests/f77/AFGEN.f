@@ -38,13 +38,13 @@ C     POINT TO THE AIRFOIL PLANE
          IF(AK.EQ.2.AND.I.EQ.360) GOTO 25
          WRITE(10,*) X,' ,',CP
 
-25    CONTINUE
+ 25   CONTINUE
          GOTO 100
       ELSE
          GOTO 50
       END IF
 
-50    CONTINUE
+ 50   CONTINUE
          TH=I/57.2958
          R1=SQRT((A*(COS(TH)-1))**2+(A*SIN(TH))**2)
          R2=SQRT((A*(COS(TH)-E))**2+(A*SIN(TH))**2)
@@ -92,7 +92,7 @@ C      DISTRIBUTION
 
       WRITE(10,*) X,' ,',CP
 
-100   CONTINUE
+ 100  CONTINUE
       END DO
 
       CLOSE(8)
