@@ -81,7 +81,19 @@ def add_subparser_wrapper(
     name: str,
     subparsers: argparse._SubParsersAction,
     parents: List[argparse.ArgumentParser],
-):
+) -> argparse.ArgumentParser:
+    """Template creation of parsers for cli programs
+
+    :param name: program name
+    :type name: str
+    :param subparsers: programs added to this object
+    :type subparsers: argparse._SubParsersAction
+    :param parents: inherit features of these parent parsers
+    :type parents: List[argparse.ArgumentParser]
+    :return: subparser with new program added to it
+    :rtype: argparse.ArgumentParser
+    """
+
     return subparsers.add_parser(
         name, parents=parents, description=prog_listing[name], help=prog_listing[name]
     )
@@ -92,7 +104,21 @@ def parse_args(
     description: str = __package__,
     version: str = "0.1.0",
     get_logger: logging.Logger = None,
-):
+) -> argparse.Namespace:
+    """Parse arguments and provide CLI help if no arguments parsed.
+    Sets the logger level based on argv flags.
+
+    :param argv: vector of args to parse, defaults to sys.argv
+    :type argv: List[str], optional
+    :param description: cli main description, defaults to __package__
+    :type description: str, optional
+    :param version: version printed out via CLI, defaults to "0.1.0"
+    :type version: str, optional
+    :param get_logger: set the level of this logger, defaults to None
+    :type get_logger: logging.Logger, optional
+    :return: args as namespace
+    :rtype: argparse.Namespace
+    """
 
     # Main parser
     formatter_class = argparse.RawTextHelpFormatter

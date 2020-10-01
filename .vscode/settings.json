@@ -14,6 +14,7 @@
         "VORING",
         "katzplotkin",
         "katzplotkinpy",
+        "rtype",
         "vooren",
         "vprint"
     ],
@@ -23,5 +24,6 @@
     "trailing-spaces.highlightCurrentLine": false,
     "editor.codeActionsOnSave": {
         "source.organizeImports": true
-    }
+    },
+    "autoDocstring.docstringFormat": "sphinx"
 }

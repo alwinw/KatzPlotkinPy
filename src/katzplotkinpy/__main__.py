@@ -2,8 +2,7 @@
 
 import logging
 
-from katzplotkinpy import __version__
-from katzplotkinpy.utils import parse_args
+from katzplotkinpy import __version__, parse_args
 
 logger = logging.getLogger(__name__)
 
