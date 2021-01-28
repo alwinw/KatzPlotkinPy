@@ -35,7 +35,7 @@ prog_listing = {
 
 
 def existing_file(input_path: str, allowed_extensions: tuple = None) -> Path:
-    """Check if the input path points to an existing file of given (optional) extension 
+    """Check if the input path points to an existing file of given (optional) extension
     and returns a Path object with expanded user
 
     :param input_path: path to check
