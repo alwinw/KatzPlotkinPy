@@ -1,6 +1,5 @@
 C     PROGRAM No. 2: DISCRETE VORTEX METHOD (THIN WING, ELLIPTIC CAMBER)
 C     -----------------------------------------------------------------
-C
 C     DISCRETE VORTEX MODEL FOR THIN AIRFOILS (JOE KATZ,CIRCA 1986)
 
       DIMENSION GAMMA(52),XC(52),ZC(52),X(52),Z(52)
@@ -39,10 +38,10 @@ C     INFLUENCE COEFFICIENTS
          DO 2 J=1,N
             CALL VOR2D(XC(I),ZC(I),X(J),Z(J),1.0,U,W)
             A(I,J)=U*ENX(I)+W*ENZ(I)
- 2       CONTINUE
+ 2             CONTINUE
 C           THE RHS VECTOR IS PLACED IN THE GAMMA VECTOR
-            GAMMA(I)=-UINF*ENX(I)-WINF*ENZ(I)
- 3    CONTINUE
+         GAMMA(I)=-UINF*ENX(I)-WINF*ENZ(I)
+ 3          CONTINUE
 
 C     SOLUTION OF THE PROBLEM: RHS(I)=A(I,J)*GAMMA(I)
       CALL DECOMP(N,52,A,IP)
@@ -89,7 +88,7 @@ C     CALCULATES INFLUENCE OF VORTEX AT (X1,Z1)
          V=0.5/PAY*GAMMA/R
          U=V*(RZ/R)
          W=V*(-RX/R)
- 1    CONTINUE
+ 1          CONTINUE
       RETURN
       END
 C
