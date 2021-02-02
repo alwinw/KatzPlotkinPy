@@ -1,8 +1,6 @@
-#!/usr/bin/env python3
-
 import logging
 
-from katzplotkinpy import __version__, parse_args
+from katzplotkinpy.cli import parse_args
 
 logger = logging.getLogger(__name__)
 
@@ -11,6 +9,6 @@ if __name__ == "__main__":
 
     args = parse_args(
         description="Python companion to Low Speed Aerodynamics",
-        version=__version__,
+        version="to fix",
         get_logger=logger,
     )

@@ -21,3 +21,13 @@ pre-commit = "^2.10.0"
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 88
+
+[tool.isort]
+profile = "black"
+
+[flake8]
+max-line-length = 88
+max-complexity = 18

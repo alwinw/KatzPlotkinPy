@@ -1,19 +1,23 @@
 #!/usr/bin/env python3
 
-import argparse
 import logging
-from collections import namedtuple
-
-import numpy
+from dataclasses import dataclass
+from typing import Any
 
 logger = logging.getLogger(__name__)
+
+
+@dataclass
+class InputVar:
+    name: str
+    value: Any
+    description: str
+    type: Any
 
 
 def interactive_inputs(
     e: float = None, k: float = None, alpha: float = None, m: int = None
 ):
-    InputVar = namedtuple("InputVars", ["name", "value", "description", "type"])
-
     input_vars = [
         InputVar("e", e, "Thickness Coef", float),
         InputVar("ak", k, "T.E. Angle Coef", float),
@@ -62,6 +66,8 @@ def afgen(e: float, k: float, alpha: float, m: int):
         raise
 
     theta = range(0, 1)
+
+    print(a, al, theta)
 
 
 if __name__ == "__main__":
