@@ -4,7 +4,9 @@ import logging
 import unittest
 from collections import namedtuple
 
-from katzplotkinpy.utils import parse_args
+from katzplotkinpy.cli import parse_args
+
+# FIXME Rewrite this test with new CLI
 
 InputArg = namedtuple("InputArg", ["name", "arg", "expect"])
 
