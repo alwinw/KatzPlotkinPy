@@ -1,49 +1,14 @@
 #!/usr/bin/env python3
 
 import logging
-from dataclasses import dataclass
-from typing import Any
 
 logger = logging.getLogger(__name__)
-
-
-@dataclass
-class InputVar:
-    name: str
-    value: Any
-    description: str
-    type: Any
-
-
-def interactive_inputs(
-    e: float = None, k: float = None, alpha: float = None, m: int = None
-):
-    input_vars = [
-        InputVar("e", e, "Thickness Coef", float),
-        InputVar("ak", k, "T.E. Angle Coef", float),
-        InputVar("alpha", alpha, "Angle of Attack (deg)", float),
-        InputVar("m", m, "Number of Panels", int),
-    ]
-
-    for input_var in input_vars:  # type:InputVar
-        value = input_var.value
-        if not value:
-            value = input("Enter {}: ".format(input_var.description))
-        try:
-            value = input_var.type(value)
-        except ValueError as e:
-            logger.error(
-                "Error while parsing input values. Got `{}` expected type `{}`".format(
-                    value, input_var.type.__name__
-                )
-            )
-            raise e
 
 
 def afgen(e: float, k: float, alpha: float, m: int):
     """Generates van de Vooren Airfoil. Refer to Section 6.7
 
-    :param e: Thickness coefficient
+    :param e: Thickness coefficient (between 0 and 1)
     :type e: float
     :param ak: Trailing edge angle coefficient
     :type ak: float

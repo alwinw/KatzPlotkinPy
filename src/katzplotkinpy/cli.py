@@ -9,6 +9,8 @@ from typing import List, Tuple
 logger = logging.getLogger(__name__)
 
 
+# Prog listing should map name to description to function
+# Consider using function type annotations to power cli
 prog_listing = {
     "afgen": "Grid generator for van de Vooren airfoil shapes",
     #
