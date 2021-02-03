@@ -3,9 +3,8 @@
 import argparse
 import logging
 import sys
-from collections import namedtuple
 from pathlib import Path
-from typing import List
+from typing import List, Tuple
 
 logger = logging.getLogger(__name__)
 
@@ -34,50 +33,45 @@ prog_listing = {
 }
 
 
-def existing_file(input_path: str, allowed_extensions: tuple = None) -> Path:
-    """Check if the input path points to an existing file of given (optional) extension
-    and returns a Path object with expanded user
+def existing_file(path: str, extensions: Tuple[str] = None) -> Path:
+    """Check if a file exists and (optionally) is of a given extension type
 
-    :param input_path: path to check
-    :type input_path: str
-    :param allowed_extensions: allowed file type extensions as .ext, defaults to None
-    :type allowed_extensions: tuple, optional
-    :raises FileNotFoundError: if file does not exist
-    :raises TypeError: if file extension is not one of allowed extensions
-    :return: input path as a Path with expanded user
+    :param path: Path to check
+    :type path: str
+    :param extensions: List of allowed file extensions, defaults to None
+    :type extensions: Tuple[str], optional
+    :raises FileNotFoundError: File does not exist
+    :raises TypeError: Wrong file type
+    :return: Path to the file
     :rtype: Path
     """
-    file_path = Path(input_path)
+
+    file_path = Path(path)
     if not file_path.is_file():
-        raise FileNotFoundError("No such file: '{}'".format(file_path))
-    if allowed_extensions is not None:
-        suffixes = [ext.lower() for ext in allowed_extensions]
-        if file_path.suffix.lower() not in suffixes:
-            raise TypeError(
-                "Wrong file format: '{}' but expected '{}'".format(
-                    file_path, allowed_extensions
-                )
-            )
+        raise FileNotFoundError(f"No such file: `{file_path}`")
+    if extensions is not None and file_path.suffix.lower() not in [
+        ext.lower() for ext in extensions
+    ]:
+        raise TypeError(f"Wrong file format: `{file_path}`. Expected `{extensions}`")
     return file_path
 
 
-def existing_dir(input_path: str) -> Path:
-    """Check if input path points to an existing directory and returns a Path object with
-    expanded user
+def existing_dir(path: str) -> Path:
+    """Check if input path points to an existing directory
 
-    :param input_path: path to check
-    :type input_path: str
-    :raises NotADirectoryError: if path is not a directory
-    :return: input path as a Path with expanded user
+    :param path: Path to check
+    :type path: str
+    :raises NotADirectoryError: Path is not a directory
+    :return: Path with expanded user
     :rtype: Path
     """
-    dir_path = Path(input_path).expanduser()
+    dir_path = Path(path).expanduser()
     if not dir_path.is_dir():
-        raise NotADirectoryError()
+        raise NotADirectoryError(f"Not a directory: `{path}`")
     return dir_path
 
 
-def add_subparser_wrapper(
+def add_subparser(
     name: str,
     subparsers: argparse._SubParsersAction,
     parents: List[argparse.ArgumentParser],
@@ -167,26 +161,26 @@ def parse_args(
     )
 
     # Program parsers
-    afgen_parser = add_subparser_wrapper("afgen", subparsers, [parent_parser])
+    afgen_parser = add_subparser("afgen", subparsers, [parent_parser])
 
-    vor2d_parser = add_subparser_wrapper("vor2d", subparsers, [parent_parser])
-    sor2dc_parser = add_subparser_wrapper("sor2dc", subparsers, [parent_parser])
-    dub2dc_parser = add_subparser_wrapper("dub2dc", subparsers, [parent_parser])
-    vor2dc_parser = add_subparser_wrapper("vor2dc", subparsers, [parent_parser])
-    sor2dl_parser = add_subparser_wrapper("sor2dl", subparsers, [parent_parser])
-    vor2dl_parser = add_subparser_wrapper("vor2dl", subparsers, [parent_parser])
+    vor2d_parser = add_subparser("vor2d", subparsers, [parent_parser])
+    sor2dc_parser = add_subparser("sor2dc", subparsers, [parent_parser])
+    dub2dc_parser = add_subparser("dub2dc", subparsers, [parent_parser])
+    vor2dc_parser = add_subparser("vor2dc", subparsers, [parent_parser])
+    sor2dl_parser = add_subparser("sor2dl", subparsers, [parent_parser])
+    vor2dl_parser = add_subparser("vor2dl", subparsers, [parent_parser])
 
-    phicd_parser = add_subparser_wrapper("phicd", subparsers, [parent_parser])
-    phicsd_parser = add_subparser_wrapper("phicsd", subparsers, [parent_parser])
-    phild_parser = add_subparser_wrapper("phild", subparsers, [parent_parser])
-    phiqd_parser = add_subparser_wrapper("phiqd", subparsers, [parent_parser])
+    phicd_parser = add_subparser("phicd", subparsers, [parent_parser])
+    phicsd_parser = add_subparser("phicsd", subparsers, [parent_parser])
+    phild_parser = add_subparser("phild", subparsers, [parent_parser])
+    phiqd_parser = add_subparser("phiqd", subparsers, [parent_parser])
 
-    dub3dc_parser = add_subparser_wrapper("dub3dc", subparsers, [parent_parser])
-    voring_parser = add_subparser_wrapper("voring", subparsers, [parent_parser])
-    panel_parser = add_subparser_wrapper("panel", subparsers, [parent_parser])
+    dub3dc_parser = add_subparser("dub3dc", subparsers, [parent_parser])
+    voring_parser = add_subparser("voring", subparsers, [parent_parser])
+    panel_parser = add_subparser("panel", subparsers, [parent_parser])
 
-    wake_parser = add_subparser_wrapper("wake", subparsers, [parent_parser])
-    uvlm_parser = add_subparser_wrapper("uvlm", subparsers, [parent_parser])
+    wake_parser = add_subparser("wake", subparsers, [parent_parser])
+    uvlm_parser = add_subparser("uvlm", subparsers, [parent_parser])
 
     if len(argv) == 1:
         main_parser.print_help(sys.stderr)
