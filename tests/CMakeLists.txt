@@ -33,3 +33,9 @@ add_executable(VOR2DC f77/VOR2DC.f f77/LINALG.f)
 add_executable(SOR2DL f77/SOR2DL.f f77/LINALG.f)
 add_executable(VOR2DL f77/VOR2DL.f f77/LINALG.f)
 #
+add_executable(PHICD  f77/PHICD.f  f77/LINALG.f)
+add_executable(PHICSD f77/PHICSD.f f77/LINALG.f)
+add_executable(PHILD  f77/PHILD.f  f77/LINALG.f)
+add_executable(PHIQD  f77/PHIQD.f  f77/LINALG.f)
+#
+add_executable(DUB3DC f77/DUB3DC.f)

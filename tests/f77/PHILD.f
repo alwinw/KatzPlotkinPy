@@ -80,7 +80,7 @@ C           FUNCTIONS OF R, TH
                PH2=0.5*(X/X2)
             ELSE
                PH1=0.15916*(X/X2*(TH2-TH1)+Z/X2*
-               * LOG(R2/R1)-(TH2-TH1))
+     *            LOG(R2/R1)-(TH2-TH1))
                PH2=-0.15916*(X/X2*(TH2-TH1)+Z/X2*LOG(R2/R1))
             END IF
 
