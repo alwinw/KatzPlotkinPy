@@ -86,10 +86,10 @@ C           THE JTH REFERENCE FRAME.
                W2L=0.5*(X)/X2
             ELSE
                W1L=-(Z*LOG(R2/R1)+X*(TH2-TH1)-X2*(TH2-TH1))/
-               * (6.28319*X2)
+     *            (6.28319*X2)
                W2L=(Z*LOG(R2/R1)+X*(TH2-TH1))/(6.28319*X2)
                U1L=((X2-Z*(TH2-TH1))-X*LOG(R1/R2)+
-               * X2*LOG(R1/R2))/(6.28319*X2)
+     *            X2*LOG(R1/R2))/(6.28319*X2)
                U2L=-((X2-Z*(TH2-TH1))-X*LOG(R1/R2))/(6.28319*X2)
             END IF
 
@@ -128,7 +128,7 @@ C           INFLUENCE MATRIX
       IF(M.EQ.10) THEN
          DO I=1,11
             WRITE(6,10) A(I,1),A(I,2),A(I,3),A(I,4),A(I,5),A(I,6),
-            * A(I,7),A(I,8),A(I,9),A(I,10),A(I,11)
+     *         A(I,7),A(I,8),A(I,9),A(I,10),A(I,11)
          END DO
       END IF
 

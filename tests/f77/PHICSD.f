@@ -92,7 +92,7 @@ C           THEM UP TO GIVE THE RHS
                TEMP=TEMP+SIG(J)/3.14159265*(X*LOG(R1))
             ELSE
                TEMP=TEMP+SIG(J)/6.28319*(X*LOG(R1)
-               * -(X-X2)*LOG(R2)+Z*(TH2-TH1))
+     *            -(X-X2)*LOG(R2)+Z*(TH2-TH1))
             END IF
          END DO
 

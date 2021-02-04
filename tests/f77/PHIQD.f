@@ -90,7 +90,7 @@ C           THE 'B' MATRIX (UNREDUCED).
                B(I,J,1)=-0.15916*(TH2-TH1)
                B(I,J,2)=-0.15916*(X*(TH2-TH1)+Z*LOG(R2/R1))
                B(I,J,3)=0.15916*((X**2-Z**2)*(TH1-TH2)
-               * -2*X*Z*LOG(R2/R1)-Z*X2)
+     *            -2*X*Z*LOG(R2/R1)-Z*X2)
             END IF
          END DO
       END DO
@@ -119,7 +119,7 @@ C     OF THE 'A' MATRIX.
             B(I,J,1)=B(I,J,1)+B(I,J+1,1)
             B(I,J,2)=B(I,J,2)+B(I,J+1,1)*DL(J)+B(I,J+1,2)
             B(I,J,3)=B(I,J,3)+B(I,J+1,1)
-            * *(DL(J))**2+2*B(I,J+1,2)*DL(J)
+     *         *(DL(J))**2+2*B(I,J+1,2)*DL(J)
          END DO
             A(I,1)=B(I,1,1)
             A(I,2)=B(I,1,2)
