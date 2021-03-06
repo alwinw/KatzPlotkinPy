@@ -4,7 +4,7 @@
 ![Visits](https://badges.pufler.dev/visits/alwinw/katzplotkinpy?style=flat-square&label=visits)
 ![GitHub last commit](https://img.shields.io/github/last-commit/alwinw/katzplotkinpy?style=flat-square)
 
-[Low Speed Aerodynamics 2nd Edition](https://www.amazon.com/Low-Speed-Aerodynamics-Second-Cambridge-Aerospace/dp/0521665523) by Joseph Katz and Alan Plotkin
+[Low Speed Aerodynamics 2nd Edition](https://www.amazon.com/Low-Speed-Aerodynamics-Second-Cambridge-Aerospace/dp/0521665523) by Joseph Katz and Allen Plotkin
 
 ## Purpose
 
