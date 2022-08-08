@@ -5,6 +5,7 @@
 src/main.py
 *.out
 .vscode/
+*.DAT
 #
 # https://github.com/github/gitignore/blob/master/Python.gitignore
 #
