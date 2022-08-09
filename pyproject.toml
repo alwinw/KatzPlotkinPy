@@ -11,8 +11,8 @@ repository = "https://github.com/alwinw/KatzPlotkinPy"
 documentation = "https://github.com/alwinw/KatzPlotkinPy"
 
 [tool.poetry.dependencies]
-python = "^3.7"
-numpy = "^1.19.5"
+python = "^3.8"
+numpy = "^1.23.0"
 
 [tool.poetry.dev-dependencies]
 # test
