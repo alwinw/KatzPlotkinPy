@@ -1,9 +1,9 @@
 import argparse
-import plotnine as pn
-import pandas as pd
-import numpy as np
-
 import logging
+
+import numpy as np
+import pandas as pd
+import plotnine as pn
 
 log = logging.getLogger(__name__)
 
@@ -13,7 +13,8 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     logging.basicConfig(
-        level=logging.INFO, format="%(name)s (%(levelname)s): %(message)s",
+        level=logging.INFO,
+        format="%(name)s (%(levelname)s): %(message)s",
     )
     log.info(f"Reading AFGEN file: {args.afgen_file}")
 
