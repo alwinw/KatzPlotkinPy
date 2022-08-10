@@ -4,17 +4,17 @@ project(katzplotkinpy)
 enable_language(Fortran)
 
 if(CMAKE_Fortran_COMPILER_ID MATCHES "GNU")
-  set(dialect "-ffixed-form -std=legacy")
+  set(dialect "-ffixed-form -ffixed-line-length-132 -std=legacy")
   set(bounds "-fcheck=bounds")
 endif()
 
 if(CMAKE_Fortran_COMPILER_ID MATCHES "Intel")
-  set(dialect "-fixed -stand none")
+  set(dialect "-fixed -extend-source 132 -stand none")
   set(bounds "-check bounds")
 endif()
 
 if(CMAKE_Fortran_COMPILER_ID MATCHES "PGI")
-  set(dialect "--Mfixed")
+  set(dialect "--Mfixed -Mextend")
   set(bounds "-C")
 endif()
 
