@@ -31,17 +31,17 @@ C        NORMAL AT COLLOCATION POINT; N=(ENX,ENZ)
          DETADX=4.*EPSILON/C*(1.-2.*XC(I)/C)
          SQ=SQRT(1+DETADX**2)
          ENX(I)=-DETADX/SQ
- 1       ENZ(I)= 1./SQ
+    1 ENZ(I)= 1./SQ
 
 C     INFLUENCE COEFFICIENTS
       DO 3 I=1,N
          DO 2 J=1,N
             CALL VOR2D(XC(I),ZC(I),X(J),Z(J),1.0,U,W)
             A(I,J)=U*ENX(I)+W*ENZ(I)
- 2             CONTINUE
-C           THE RHS VECTOR IS PLACED IN THE GAMMA VECTOR
+    2    CONTINUE
+C        THE RHS VECTOR IS PLACED IN THE GAMMA VECTOR
          GAMMA(I)=-UINF*ENX(I)-WINF*ENZ(I)
- 3          CONTINUE
+    3 CONTINUE
 
 C     SOLUTION OF THE PROBLEM: RHS(I)=A(I,J)*GAMMA(I)
       CALL DECOMP(N,52,A,IP)
@@ -55,21 +55,21 @@ C     AERODYNAMIC LOADS
 C        DCP1 IS THE ANALYTIC SOLUTION
          DD=32.*EPSILON/C*SQRT(X(I)/C*(1.-X(I)/C))
          DCP1(I)=4.*SQRT((C-X(I))/X(I))*ALFA+DD
- 4       BL=BL+DL(I)
-         CL=BL/(QUE*C)
-         CL1=2.*PAY*(ALFA+2*EPSILON/C)
+    4 BL=BL+DL(I)
+      CL=BL/(QUE*C)
+      CL1=2.*PAY*(ALFA+2*EPSILON/C)
 C     CL1,DCP1-ARE THE EXACT SOLUTIONS
 
 C     OUTPUT
       WRITE(6,14)
       WRITE(6,15) V,CL,CL1,N,ALFA1
       DO 5 I=1,N
- 5        WRITE(6,16)I,X(I),DCP(I),DCP1(I)
+    5 WRITE(6,16)I,X(I),DCP(I),DCP1(I)
 
- 14   FORMAT( ' THIN AIRFOIL WITH ELLIPTIC CAMBER ')
- 15   FORMAT( ' V=',F7.1,3X,'CL=',F7.3,3X,'CL(EXACT)=',F7.3,3X,'N= ',
+   14 FORMAT( ' THIN AIRFOIL WITH ELLIPTIC CAMBER ')
+   15 FORMAT( ' V=',F7.1,3X,'CL=',F7.3,3X,'CL(EXACT)=',F7.3,3X,'N= ',
      $I6,3X,'ALPHA= ',F6.1)
- 16   FORMAT( I5,3X,'X=',F8.2,5X,'DCP=',F8.2,3X,'DCP(EXACT)=',5F6.2)
+   16 FORMAT( I5,3X,'X=',F8.2,5X,'DCP=',F8.2,3X,'DCP(EXACT)=',5F6.2)
 
 C     PLOTTER OUTPUT IS PLACED HERE (e.g. DCP AND DCP1-VS-X/C)
 
@@ -78,20 +78,20 @@ C     PLOTTER OUTPUT IS PLACED HERE (e.g. DCP AND DCP1-VS-X/C)
 
       SUBROUTINE VOR2D(X,Z,X1,Z1,GAMMA,U,W)
 C     CALCULATES INFLUENCE OF VORTEX AT (X1,Z1)
-      PAY=3.141592654
-      U=0.0
-      W=0.0
-      RX=X-X1
-      RZ=Z-Z1
-      R=SQRT(RX**2+RZ**2)
-      IF(R.LT.0.001) GOTO 1
+         PAY=3.141592654
+         U=0.0
+         W=0.0
+         RX=X-X1
+         RZ=Z-Z1
+         R=SQRT(RX**2+RZ**2)
+         IF(R.LT.0.001) GOTO 1
          V=0.5/PAY*GAMMA/R
          U=V*(RZ/R)
          W=V*(-RX/R)
- 1          CONTINUE
-      RETURN
+    1    CONTINUE
+         RETURN
       END
-C
+
 C     THE FOLLOWING SUBROUTINES ARE LISTED WITH THE STEADY STATE
 C     VORTEX LATTICE SOLVER (program No. 13).
 C
