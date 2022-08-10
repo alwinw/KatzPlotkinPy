@@ -1,7 +1,7 @@
 C     PROGRAM No. 12: INFLUENCE COEFF. OF A RECTILINEAR SOURCE/DOUBLET PANEL
 C     -----------------------------------------------------------------
 C     THIS PROGRAM CALCULATES THE INFLUENCE OF A RECTILINEAR PANEL AT AN
-C        ARBITRARY POINT. (PROGRAM BY LINDSEY BROWNE, 1988).
+C     ARBITRARY POINT. (PROGRAM BY LINDSEY BROWNE, 1988).
       DIMENSION X(5),Y(5),Z(5)
 
       PI=3.14159
@@ -28,7 +28,7 @@ C     INPUT COORDINATES
 
       DO 5 I=1,4
          Z(I)=0.0
- 5          CONTINUE
+    5 CONTINUE
 
       X(5)=X(1)
       Y(5)=Y(1)
@@ -39,7 +39,7 @@ C     MID-POINT AT (0,0,0)
       PYO=0.0
       PZO=0.0
 
- 100     CONTINUE
+  100 CONTINUE
 
       RJ31 = 0.0
       CJK1 = 0.0
@@ -139,9 +139,9 @@ C        SOURCE CONTRIBUTION
             DE=0.0
          ELSE
             IF(RNUM.NE.0)THEN
-                  DE=ATAN2(RNUM,DNOM)
+               DE=ATAN2(RNUM,DNOM)
             ELSE
-                  DE=0.0
+               DE=0.0
             ENDIF
          ENDIF
 
@@ -161,14 +161,14 @@ C        DOUBLET CONTRIBUTION
          VXD=VXD + DUB*VMOD*AVBX
          VYD=VYD + DUB*VMOD*AVBY
          VZD=VZD + DUB*VMOD*AVBZ
- 20         CONTINUE
+   20 CONTINUE
 
 C     LIMITING CASES
       DTT=TWOPI
       IF(RDIST.GT.0.0) PNDS=PNZ**2/RDIST
 
       IF(PNDS.LT.EPS.AND.RDIST.GT.EPS)THEN
-            DTT=PNZ*AREA/SQRT(RDIST)/RDIST
+         DTT=PNZ*AREA/SQRT(RDIST)/RDIST
       ENDIF
 
       IF(ABS(DTT).LT.ABS(CJK1))CJK1=DTT
