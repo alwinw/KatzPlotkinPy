@@ -11,31 +11,36 @@ repository = "https://github.com/alwinw/KatzPlotkinPy"
 documentation = "https://github.com/alwinw/KatzPlotkinPy"
 
 [tool.poetry.dependencies]
-python = "^3.8"
-numpy = "^1.23.0"
+python = "^3.8.1"
+numpy = "^1.24.4"
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 # test
-pytest = "^6.2.3"
-pytest-cov = "^2.12.1"
-codecov = "^2.1.12"
+pytest = "^7.4.0"
+pytest-cov = "^4.1.0"
 # format
-black = "^22.3.0"
-isort = "^5.10.1"
+black = "^23.7.0"
+isort = "^5.12.0"
 # lint
-commitizen = "^2.24.0"
-flake8 = "^4.0.1"
-mypy = "^0.910"
-pre-commit = "^2.18.1"
+commitizen = "^3.6.0"
+mypy = "^1.5.1"
+pre-commit = "^3.3.3"
+pycln = "^2.2.2"
+pyproject-flake8 = "^6.0.0.post1"
 # docs
 
+[tool.poetry.group.interactive.dependencies]
+jupyter = "^1.0.0"
+notebook = "^7.0.2"
+ipython = "^8.12.2"
+
 [build-system]
-requires = ["poetry-core>=1.0.0"]
+requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.black]
 line-length = 88
-target-version = ['py37', 'py38']
+target-version = ['py38', 'py39', 'py310', 'py311']
 
 [tool.isort]
 line_length = 88
