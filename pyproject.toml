@@ -19,7 +19,7 @@ numpy = "^1.24.4"
 pytest = "^7.4.0"
 pytest-cov = "^4.1.0"
 # format
-black = "^23.7.0"
+black = "^24.3.0"
 isort = "^5.12.0"
 # lint
 commitizen = "^3.6.0"
