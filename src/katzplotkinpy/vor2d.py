@@ -1,93 +1,222 @@
-# Python code for discrete vortex method (thin wing, elliptic camber)
-# Based on Fortran code by Joe Katz, circa 1986
+from pathlib import Path
+from typing import List, Tuple
 
+import matplotlib.pyplot as plt
 import numpy as np
 
-# Parameters
-N = 10  # number of panels
-C = 1.0  # chord length
-EPSILON = 0.1 * C  # camber amplitude
-ALFA1 = 10.0  # angle of attack in degrees
-PAY = np.pi  # pi constant
-ALFA = ALFA1 * PAY / 180.0  # angle of attack in radians
-RO = 1.0  # air density
-V = 1.0  # free stream velocity
-UINF = np.cos(ALFA) * V  # x-component of free stream velocity
-WINF = np.sin(ALFA) * V  # z-component of free stream velocity
-QUE = 0.5 * RO * V**2  # dynamic pressure
 
-# Arrays
-GAMMA = np.zeros(N)  # vortex strength
-XC = np.zeros(N)  # collocation point x-coordinate
-ZC = np.zeros(N)  # collocation point z-coordinate
-X = np.zeros(N)  # vortex point x-coordinate
-Z = np.zeros(N)  # vortex point z-coordinate
-ENX = np.zeros(N)  # normal vector x-component at collocation point
-ENZ = np.zeros(N)  # normal vector z-component at collocation point
-A = np.zeros((N, N))  # influence coefficient matrix
-DL = np.zeros(N)  # lift per unit span
-DCP = np.zeros(N)  # pressure coefficient
-DCP1 = np.zeros(N)  # exact pressure coefficient
+def vor2d(
+    x: float, z: float, x1: float, z1: float, gamma: float
+) -> Tuple[float, float]:
+    """
+    Calculates the influence of a vortex at (x1, z1).
 
-# Grid generation (N panels)
-DX = C / N  # panel length
-for I in range(N):
-    # Collocation point
-    XC[I] = C / N * (I + 0.75)
-    ZC[I] = 4.0 * EPSILON * XC[I] / C * (1.0 - XC[I] / C)
-    # Vortex point
-    X[I] = C / N * (I + 0.25)
-    Z[I] = 4.0 * EPSILON * X[I] / C * (1.0 - X[I] / C)
-    # Normal vector at collocation point; N=(ENX,ENZ)
-    DETADX = 4.0 * EPSILON / C * (1.0 - 2.0 * XC[I] / C)
-    SQ = np.sqrt(1 + DETADX**2)
-    ENX[I] = -DETADX / SQ
-    ENZ[I] = 1.0 / SQ
+    Parameters
+    ----------
+    x : float
+        X-coordinate of the point where the influence is calculated.
+    z : float
+        Z-coordinate of the point where the influence is calculated.
+    x1 : float
+        X-coordinate of the vortex point.
+    z1 : float
+        Z-coordinate of the vortex point.
+    gamma : float
+        Circulation strength of the vortex.
 
-# Influence coefficients
-for I in range(N):
-    for J in range(N):
-        A[I, J] = vor2d(XC[I], ZC[I], X[J], Z[J], 1.0) @ np.array([ENX[I], ENZ[I]])
-    # The RHS vector is placed in the GAMMA vector
-    GAMMA[I] = -UINF * ENX[I] - WINF * ENZ[I]
+    Returns
+    -------
+    Tuple[float, float]
+        The influence (u, w) at the point (x, z).
+    """
+    pay = np.pi
+    rx = x - x1
+    rz = z - z1
+    r = np.sqrt(rx**2 + rz**2)
 
-# Solution of the problem: RHS(I)=A(I,J)*GAMMA(I)
-GAMMA = np.linalg.solve(A, GAMMA)
+    if r < 0.001:
+        return 0.0, 0.0
 
-# Aerodynamic loads
-BL = 0.0
-for I in range(N):
-    DL[I] = RO * V * GAMMA[I]
-    DCP[I] = DL[I] / DX / QUE
-    # DCP1 is the analytic solution
-    DD = 32.0 * EPSILON / C * np.sqrt(X[I] / C * (1.0 - X[I] / C))
-    DCP1[I] = 4.0 * np.sqrt((C - X[I]) / X[I]) * ALFA + DD
-    BL += DL[I]
-CL = BL / (QUE * C)
-CL1 = 2.0 * PAY * (ALFA + 2 * EPSILON / C)
+    v = 0.5 / pay * gamma / r
+    u = v * (rz / r)
+    w = v * (-rx / r)
 
-# Output to console
-print("Thin airfoil with elliptic camber")
-print(
-    f"V={V:7.1f}   CL={CL:7.3f}   CL(EXACT)={CL1:7.3f}   N={N:6d}   ALPHA={ALFA1:6.1f}"
-)
-print(" I      X      DCP     DCP(EXACT)")
-for I in range(N):
-    print(f"{I+1:2d} {X[I]:8.2f} {DCP[I]:8.2f} {DCP1[I]:8.2f}")
-
-# Plotter output can be placed here (e.g., DCP and DCP1 vs X/C)
+    return u, w
 
 
-def vor2d(X, Z, X1, Z1, GAMMA):
-    # Calculates influence of vortex at (X1,Z1)
-    U = 0.0
-    W = 0.0
-    RX = X - X1
-    RZ = Z - Z1
-    R = np.sqrt(RX**2 + RZ**2)
-    if R < 0.001:
-        return np.array([U, W])
-    V = 0.5 / PAY * GAMMA / R
-    U = V * (RZ / R)
-    W = -V * (RX / R)
-    return np.array([U, W])
+def decomp(n: int, a: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
+    """
+    LU decomposition of matrix A.
+
+    Parameters
+    ----------
+    n : int
+        The order of the matrix.
+    a : np.ndarray
+        The matrix to decompose.
+
+    Returns
+    -------
+    Tuple[np.ndarray, np.ndarray]
+        The LU-decomposed matrix and the pivot indices.
+    """
+    from scipy.linalg import lu_factor
+
+    return lu_factor(a)
+
+
+def solver(
+    n: int, lu_and_piv: Tuple[np.ndarray, np.ndarray], b: np.ndarray
+) -> np.ndarray:
+    """
+    Solves the linear system Ax = b using LU decomposition.
+
+    Parameters
+    ----------
+    n : int
+        The order of the matrix.
+    lu_and_piv : Tuple[np.ndarray, np.ndarray]
+        The LU-decomposed matrix and the pivot indices.
+    b : np.ndarray
+        The right-hand side vector.
+
+    Returns
+    -------
+    np.ndarray
+        The solution vector.
+    """
+    from scipy.linalg import lu_solve
+
+    return lu_solve(lu_and_piv, b)
+
+
+def discrete_vortex_method(
+    n: int, c: float, epsilon: float, alfa1: float
+) -> Tuple[np.ndarray, np.ndarray, np.ndarray, float, float]:
+    """
+    Discrete Vortex Method for thin airfoils with elliptic camber.
+
+    Parameters
+    ----------
+    n : int
+        Number of panels.
+    c : float
+        Chord length.
+    epsilon : float
+        Camber parameter.
+    alfa1 : float
+        Angle of attack in degrees.
+
+    Returns
+    -------
+    Tuple[np.ndarray, np.ndarray, np.ndarray, float, float]
+        X-coordinates, DCP, DCP1, CL, CL1
+    """
+    pay = np.pi
+    alfa = alfa1 * pay / 180.0
+    ro = 1.0
+    v = 1.0
+    uinf = np.cos(alfa) * v
+    winf = np.sin(alfa) * v
+    que = 0.5 * ro * v * v
+
+    # Grid generation (N panels)
+    dx = c / n
+    xc = np.array([c / n * (i - 0.25) for i in range(1, n + 1)])
+    zc = 4.0 * epsilon * xc / c * (1.0 - xc / c)
+    x = np.array([c / n * (i - 0.75) for i in range(1, n + 1)])
+    z = 4.0 * epsilon * x / c * (1.0 - x / c)
+    detadx = 4.0 * epsilon / c * (1.0 - 2.0 * xc / c)
+    sq = np.sqrt(1 + detadx**2)
+    enx = -detadx / sq
+    enz = 1.0 / sq
+
+    # Influence coefficients
+    a = np.zeros((n, n))
+    gamma = np.zeros(n)
+    for i in range(n):
+        for j in range(n):
+            u, w = vor2d(xc[i], zc[i], x[j], z[j], 1.0)
+            a[i, j] = u * enx[i] + w * enz[i]
+        gamma[i] = -uinf * enx[i] - winf * enz[i]
+
+    # Solution of the problem: RHS(i) = A(i, j) * GAMMA(i)
+    lu_and_piv = decomp(n, a)
+    gamma = solver(n, lu_and_piv, gamma)
+
+    # Aerodynamic loads
+    dl = ro * v * gamma
+    dcp = dl / dx / que
+    dd = 32.0 * epsilon / c * np.sqrt(x / c * (1.0 - x / c))
+    dcp1 = 4.0 * np.sqrt((c - x) / x) * alfa + dd
+    bl = np.sum(dl)
+    cl = bl / (que * c)
+    cl1 = 2.0 * pay * (alfa + 2 * epsilon / c)
+
+    return x, dcp, dcp1, cl, cl1
+
+
+def plot_results(
+    x: np.ndarray,
+    dcp: np.ndarray,
+    dcp1: np.ndarray,
+    cl: float,
+    cl1: float,
+    alfa1: float,
+    n: int,
+) -> None:
+    """
+    Plots the results of the Discrete Vortex Method.
+
+    Parameters
+    ----------
+    x : np.ndarray
+        X-coordinates.
+    dcp : np.ndarray
+        Discrete pressure coefficient.
+    dcp1 : np.ndarray
+        Exact pressure coefficient.
+    cl : float
+        Lift coefficient.
+    cl1 : float
+        Exact lift coefficient.
+    alfa1 : float
+        Angle of attack in degrees.
+    n : int
+        Number of panels.
+    """
+    plt.figure(figsize=(10, 6))
+    plt.plot(x, dcp, "bo-", label="DCP (Discrete)")
+    plt.plot(x, dcp1, "r--", label="DCP (Exact)")
+    plt.xlabel("X")
+    plt.ylabel("DCP")
+    plt.title(
+        f"Thin Airfoil with Elliptic Camber\nCL = {cl:.3f}, CL (Exact) = {cl1:.3f}, N = {n}, Alpha = {alfa1:.1f}"
+    )
+    plt.legend()
+    plt.grid(True)
+    plt.show()
+
+
+if __name__ == "__main__":
+    # Parameters
+    n = 10
+    c = 1.0
+    epsilon = 0.1 * c
+    alfa1 = 10.0
+
+    # Run the Discrete Vortex Method
+    x, dcp, dcp1, cl, cl1 = discrete_vortex_method(n, c, epsilon, alfa1)
+
+    # Output results
+    print("Thin Airfoil with Elliptic Camber")
+    print(
+        f"V = 1.0, CL = {cl:.3f}, CL (Exact) = {cl1:.3f}, N = {n}, Alpha = {alfa1:.1f}"
+    )
+    for i in range(n):
+        print(
+            f"{i+1:5d}  X = {x[i]:8.2f}  DCP = {dcp[i]:8.2f}  DCP (Exact) = {dcp1[i]:6.2f}"
+        )
+
+    # Plot results
+    plot_results(x, dcp, dcp1, cl, cl1, alfa1, n)
