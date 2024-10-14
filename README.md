@@ -26,8 +26,8 @@ instructions in [tests/BUILD.md](tests/BUILD.md).
 |       |          |                ***2D Panel Methods***                 |         |        |         |
 |  1.   | `AFGEN`  |    Grid generator for van de Vooren airfoil shapes    |   6.7   |   ✅    |    ✅    |
 |       |          |         ***2D: Neumann Boundary Condition***          |         |        |         |
-|  2.   | `VOR2D`  |           Discrete vortex, thin wing method           | 11.1.1  |   🔄    |    ✅    |
-|  3.   | `SOR2DC` |            Constant strength source method            | 11.2.1  |   🔄    |    ✅    |
+|  2.   | `VOR2D`  |           Discrete vortex, thin wing method           | 11.1.1  |   ✅    |    ✅    |
+|  3.   | `SOR2DC` |            Constant strength source method            | 11.2.1  |   ✅    |    ✅    |
 |  4.   | `DUB2DC` |           Constant strength doublet method            | 11.2.2  |   🔄    |    ✅    |
 |  5.   | `VOR2DC` |            Constant strength vortex method            | 11.2.3  |   🔄    |    ✅    |
 |  6.   | `SOR2DL` |             Linear strength source method             | 11.4.1  |   🔄    |    ✅    |
