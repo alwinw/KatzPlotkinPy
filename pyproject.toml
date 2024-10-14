@@ -2,64 +2,70 @@
 
 name = "KatzPlotkinPy"
 version = "0.1.0"
-description = "This is a project implements the FORTRAN computer programs listed in Low Speed Aerodynamics (2nd Ed) into a Python package and stand alone program(s). Additional features such as visualisation have been included."
+description = "Unofficial companion to Low Speed Aerodynamics (2nd Ed)"
 license = "MIT"
 authors = ["alwinw <16846521+alwinw@users.noreply.github.com>"]
 readme = "README.md"
 homepage = "https://github.com/alwinw/KatzPlotkinPy"
 repository = "https://github.com/alwinw/KatzPlotkinPy"
 documentation = "https://github.com/alwinw/KatzPlotkinPy"
+packages = [{ include = "katzplotkinpy", from = "src" }]
 
 [tool.poetry.dependencies]
-python = "^3.8.1"
-numpy = "^1.24.4"
+python = "^3.8"
+numpy = [
+  { version = "^1.24", python = "<3.9" },
+  { version = "^2.0.2", python = ">=3.9,<3.10" },
+  { version = "^2.1", python = ">=3.10" },
+]
 
-[tool.poetry.group.dev.dependencies]
-# test
-pytest = "^7.4.0"
-pytest-cov = "^4.1.0"
-# format
-black = "^24.3.0"
-isort = "^5.12.0"
-# lint
-commitizen = "^3.6.0"
-mypy = "^1.5.1"
-pre-commit = "^3.3.3"
-pycln = "^2.2.2"
-pyproject-flake8 = "^6.0.0.post1"
-# docs
+[tool.poetry.group.dev-tools.dependencies]
+mypy = "^1.12.0"
+ruff = "^0.6.3"
+pytest = "^8.3.3"
+pytest-cov = "^5.0.0"
+tox = "^4.18.0"
 
-[tool.poetry.group.interactive.dependencies]
-jupyter = "^1.0.0"
-notebook = "^7.0.7"
-ipython = "^8.12.2"
+[tool.poetry.group.dev-interactive.dependencies]
+ipython = [
+  { version = "^8.12.3", python = "<3.9" },
+  { version = "^8.18.0", python = ">=3.9,<3.10" },
+  { version = "^8.27.0", python = ">=3.10" },
+]
+ipykernel = "^6.29.5"
+ipywidgets = "^8.1.5"
+
+[tool.poetry.group.dev-tools]
+optional = true
+
+[tool.poetry.group.dev-interactive]
+optional = true
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
-[tool.black]
-line-length = 88
-target-version = ['py38', 'py39', 'py310', 'py311']
-
-[tool.isort]
-line_length = 88
-profile = "black"
+[tool.commitizen]
+name = "cz_conventional_commits"
+tag_format = "v$version"
+version_scheme = "semver"
+version_provider = "poetry"
+update_changelog_on_bump = false
+changelog_incremental = true
+use_shortcuts = true
+version_files = ['src/katzplotkinpy/__version__.py']
 
 [tool.pytest.ini_options]
-minversion = "6.0"
 addopts = [
-  "-ra -q",
-  "-v",
-  "--showlocals",
-  "--strict-markers",
-  "--strict-config",
-] # --cov-report xml --cov=tuify
+  "-v",                        # Increase verbosity
+  "-ra",                       # Extra test summary
+  "--ff",                      # Run failed tests first
+  "--showlocals",              # Locals in tracebacks
+  "--strict-markers",          # Unknown markers raise errors
+  "--strict-config",           # Unknown config options raise errors
+  "--cov=tuify",               # Measure coverage of package
+  "--cov-report=term-missing", # Show missing lines in terminal
+  "--cov-fail-under=0",        # Fail if coverage is less than MIN
+]
+minversion = "8.0"
 testpaths = ["tests"]
-
-[tool.flake8]
-max-line-length = 88
-max-doc-length = 88
-max-complexity = 10
-doctests = true
-exclude = ['.git', '__pycache__', '.venv']
