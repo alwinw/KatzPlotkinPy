@@ -133,7 +133,7 @@ coverage report -m
 
 ### Contributors
 
-[@Alwin Wang](github.com/alwinw)
+[@Alwin Wang](https://github.com/alwinw)
 
 [@cibinjoseph](https://github.com/cibinjoseph) - Fortran `WAKE` and `UVLM` transcripts
 
