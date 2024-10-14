@@ -20,11 +20,15 @@ numpy = [
 ]
 
 [tool.poetry.group.dev-tools.dependencies]
+matplotlib = [
+  { version = "^3.7.5", python = "<3.9" },
+  { version = "^3.9.2", python = ">=3.9" },
+]
 mypy = "^1.12.0"
-ruff = "^0.6.3"
+ruff = "^0.6.9"
 pytest = "^8.3.3"
 pytest-cov = "^5.0.0"
-tox = "^4.18.0"
+tox = "^4.21.2"
 
 [tool.poetry.group.dev-interactive.dependencies]
 ipython = [

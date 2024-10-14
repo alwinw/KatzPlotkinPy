@@ -53,6 +53,11 @@ instructions in [tests/BUILD.md](tests/BUILD.md).
 
 Details to come
 
+```bash
+poetry install --with dev-tools --with dev-interactive
+pip install -e .
+```
+
 ### Usage
 
 A program can be used as a group of programs or individually.
